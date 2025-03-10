@@ -5,7 +5,7 @@ const cheerio = require('cheerio');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('bus')
+		.setName('shuttle')
 		.setDescription('Returns informtation about the next shuttle.')
 		.addStringOption(option =>
 			option.setName('campus')
