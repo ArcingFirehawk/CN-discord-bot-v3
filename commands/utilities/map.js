@@ -1,4 +1,4 @@
-// Discord slash command that links to a campus's map.
+// Discord slash command that links to a QUT's campus maps.
 
 
 
@@ -20,6 +20,10 @@ module.exports =
 	async execute(interaction)
 	{
 		response = `Here's the link to the campuses' maps: ${link}.`;
-		await interaction.reply(response);		
+		await interaction.reply(
+		{
+			content: response,
+			ephemeral: true
+		})
 	},
 };

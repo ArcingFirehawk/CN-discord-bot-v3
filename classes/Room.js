@@ -13,9 +13,9 @@ class Room {
 
     // METHODS
 
-    // Method to print the room's details.
+    // Method to print the room'
     print() {
-        console.log("Room #: ${roomNumber}, Timeslot: ${timeSlot}, Max. Capacity: ${maxCapacity}, Booked: {$booked}, Link: ${link}")
+        console.log(`Room #: ${roomNumber}, Timeslot: ${timeSlot}, Max. Capacity: ${maxCapacity}, Booked: {$booked}, Link: ${link}.`)
     }
 }
 
