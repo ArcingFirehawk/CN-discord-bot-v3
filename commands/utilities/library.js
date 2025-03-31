@@ -3,17 +3,15 @@ const roomClass = require("../../classes/Room.js");
 const axios = require('axios'); // Use axios instead of request
 const cheerio = require('cheerio');
 
+
 // VARIABLES
-
-
-// const roomClass = {};
-
-// const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
+
+
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('libary')
+		.setName('library')
 		.setDescription('Returns information about the libary\'\s current capacity.')
 		.addStringOption(option =>
 			option.setName('campus')
@@ -22,18 +20,21 @@ module.exports = {
 					{ name: 'Gardens Point', value: 'GP' },
 					{ name: 'Kelvin Grove', value: 'KG' },
 					{ name: 'Gardens Point Law', value: 'law' },
-					// { name: 'All Libaries', value: 'all' },
 				)
 				.setRequired(true)),
+
 	async execute(interaction) {
-		// Reply to the interaction with a loading message
-		await interaction.reply({ content: '🔍 Analysing Data...', ephemeral: true });
+		// Reply to the interaction with a loading message.
+		await interaction.reply(
+			{ content: '🔍 Analysing Data...',
+				ephemeral: true
+			});
 
 		const option = interaction.options.getString('campus');
 		const url = `https://spaces.library.qut.edu.au/mob/${option}`;
 
 		try {
-			// Fetch the HTML data
+			// Retrievs HTML data.
 			const response = await axios.get(url);
 			const $ = cheerio.load(response.data);
 			$('.past').remove(); // Remove unnecessary elements
@@ -42,45 +43,15 @@ module.exports = {
 			const info = [];
 			
 			// Gets information from the website.
-			$('.room_wrapper').each(function (index, element) {
-				// const level = room.slice(4).substring(0, 1);
-				// const available = ($(element).find('a > .room_booking > ul > li').length - $(element).find('a > .room_booking > ul > .booked').length);
-				// const unavailable = $(element).find('a > .room_booking > ul > .booked').length;
+			$('.room_wrapper').each(function (index, element)
+			{
 				const room = $(element).find('a > .room > h3 ').text();
 				const adr = $(element).find('a').attr('href');
-				// const total = $(element).find('a > .room_booking > ul > li').length;
 				const capacity = $(element).find('a > .room > span').text().replace(" ", "");
 				const time = $(element).find('a > .room_booking > ul > li').attr('title');
 				const booked = $(element).find('booked').length;
 
-				// levels.push({
-				// 	// level: level,
-				// 	time: time,
-				// 	capacity: capacity,
-                //                         numa: available,
-                //                         // numua: unavailable,
-				// 	total: total,
-				// });
-
 				info.push((new roomClass(room, time, capacity, booked, adr)))
-
-				// $('.room_wrapper > a > .room_booking > ul > li').each(function (index, element) {
-				// //const total = $(element).length;
-				// // const time = $(element).attr('title');
-				// // const booked = $(element).find('booked').length; 
-				// info.push({
-				// 	// level: level,
-				// 	room: room,
-				// 	// time: time,
-				// 	// roomCapacity: capacity,
-                //                         numa: available,
-                //                         // numua: unavailable,
-				// 	total: total,
-				// 	booked: booked,
-				// 	value: adr,
-				// });
-				// 	});
-
 			});
 
 			if (!info || info.length === 0) {
@@ -110,13 +81,6 @@ Object.keys(levelCapacity).forEach(level => {
       Total Capacity = ${levelCapacity[level].totalCapacity}, 
       Available Capacity = ${levelCapacity[level].currentAvailableCapacity}`);
 });
-
-
-
-
-
-
-
 
 				console.log(info)
 				await interaction.editReply({ content: info });
