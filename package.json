@@ -4,7 +4,9 @@
   "description": "A multipurpose Discord Bot for Code Network",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    
+    "start": "node deploy-commands.js && node index.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,7 @@
   "dependencies": {
     "@discordjs/voice": "^0.18.0",
     "@distube/ytdl-core": "^4.16.4",
+    "axios": "^1.8.3",
     "cheerio": "^1.0.0",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
