@@ -1,3 +1,6 @@
+// Discord slash command that prints all server members with a specific role.
+
+
 //*Requires "PRESENCE INTENT" in the Discord Developer Portal to be enabled for full functionality.
 
 const { SlashCommandBuilder } = require("discord.js");

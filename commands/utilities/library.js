@@ -1,11 +1,20 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder } = require('discord.js');
+// IMPORTS
+const roomClass = require("../../classes/Room.js");
 const axios = require('axios'); // Use axios instead of request
 const cheerio = require('cheerio');
+
+// VARIABLES
+
+
+// const roomClass = {};
+
+// const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('libary')
-		.setDescription('Returns informtation about the libarys current capacity')
+		.setDescription('Returns information about the libary\'\s current capacity.')
 		.addStringOption(option =>
 			option.setName('campus')
 				.setDescription('The place you wanna check')
@@ -31,45 +40,52 @@ module.exports = {
 			$('.fa-icon').remove();
 			const levels = [];
 			const info = [];
+			
+			// Gets information from the website.
 			$('.room_wrapper').each(function (index, element) {
+				// const level = room.slice(4).substring(0, 1);
+				// const available = ($(element).find('a > .room_booking > ul > li').length - $(element).find('a > .room_booking > ul > .booked').length);
+				// const unavailable = $(element).find('a > .room_booking > ul > .booked').length;
+				const room = $(element).find('a > .room > h3 ').text();
 				const adr = $(element).find('a').attr('href');
-				const room = $(element).find('a > .room > h3').text();
+				// const total = $(element).find('a > .room_booking > ul > li').length;
 				const capacity = $(element).find('a > .room > span').text().replace(" ", "");
-				const level = room.slice(4).substring(0, 1);
-				const available = ($(element).find('a > .room_booking > ul > li').length - $(element).find('a > .room_booking > ul > .booked').length);
-				const unavailable = $(element).find('a > .room_booking > ul > .booked').length;
-				const total = $(element).find('a > .room_booking > ul > li').length;
-				// const time = $(element).find('a > .room_booking > ul > li').attr('title');
-				levels.push({
-					level: level,
-					//time: time,
-					capacity: capacity,
-                                        numa: available,
-                                        numua: unavailable,
-					total: total,
-				});
-				$('.room_wrapper > a > .room_booking > ul > li').each(function (index, element) {
-				//const total = $(element).length;
-				const time = $(element).attr('title');
-				const booked = $(element).find('booked').length; 
-				info.push({
-					level: level,
-					room: room,
-					time: time,
-					roomCapacity: capacity,
-                                        numa: available,
-                                        numua: unavailable,
-					total: total,
-					booked: booked,
-					value: adr,
-				});
-					});
+				const time = $(element).find('a > .room_booking > ul > li').attr('title');
+				const booked = $(element).find('booked').length;
+
+				// levels.push({
+				// 	// level: level,
+				// 	time: time,
+				// 	capacity: capacity,
+                //                         numa: available,
+                //                         // numua: unavailable,
+				// 	total: total,
+				// });
+
+				info.push((new roomClass(room, time, capacity, booked, adr)))
+
+				// $('.room_wrapper > a > .room_booking > ul > li').each(function (index, element) {
+				// //const total = $(element).length;
+				// // const time = $(element).attr('title');
+				// // const booked = $(element).find('booked').length; 
+				// info.push({
+				// 	// level: level,
+				// 	room: room,
+				// 	// time: time,
+				// 	// roomCapacity: capacity,
+                //                         numa: available,
+                //                         // numua: unavailable,
+				// 	total: total,
+				// 	booked: booked,
+				// 	value: adr,
+				// });
+				// 	});
 
 			});
 
 			if (!info || info.length === 0) {
 				// If no results found
-				await interaction.editReply({ content: 'Hmmm, we had troble getting the data', ephemeral: true });
+				await interaction.editReply({ content: 'Hmmm, we had trouble getting the data', ephemeral: true });
 			} else {
 
 const levelCapacity = {};
