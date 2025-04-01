@@ -1,3 +1,11 @@
+/**
+ * @name: library.js
+ * @description: Discord slash command that returns information about the current capacity QUT's libraries.
+ * @author: William Qu. Debugging and refactoring done by Anthony Choi Isaac Lee.
+ */
+
+
+
 // IMPORTS
 const roomClass = require("../../classes/Room.js");
 const axios = require('axios'); // Use axios instead of request
@@ -8,7 +16,7 @@ const cheerio = require('cheerio');
 const { SlashCommandBuilder } = require('discord.js');
 
 
-
+// COMMAND BUILDER
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('library')
@@ -19,7 +27,7 @@ module.exports = {
 				.addChoices(
 					{ name: 'Gardens Point', value: 'GP' },
 					{ name: 'Kelvin Grove', value: 'KG' },
-					{ name: 'Gardens Point Law', value: 'law' },
+					{ name: 'Gardens Point Law', value: 'Law' },
 				)
 				.setRequired(true)),
 
@@ -33,7 +41,8 @@ module.exports = {
 		const option = interaction.options.getString('campus');
 		const url = `https://spaces.library.qut.edu.au/mob/${option}`;
 
-		try {
+		try
+		{
 			// Retrievs HTML data.
 			const response = await axios.get(url);
 			const $ = cheerio.load(response.data);
@@ -54,10 +63,15 @@ module.exports = {
 				info.push((new roomClass(room, time, capacity, booked, adr)))
 			});
 
-			if (!info || info.length === 0) {
+			if (!info || info.length === 0)
+			{
 				// If no results found
-				await interaction.editReply({ content: 'Hmmm, we had trouble getting the data', ephemeral: true });
-			} else {
+				await interaction.editReply(
+					{ 
+						content: 'Hmmm, we had trouble getting the data.',
+						ephemeral: true
+					});
+			} else {    // !!! Where is this going?
 
 const levelCapacity = {};
 levels.forEach(room => {

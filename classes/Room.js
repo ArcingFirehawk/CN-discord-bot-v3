@@ -1,4 +1,6 @@
-// Class to construct a room for library.js.
+/**
+ * @description: Class to construct a room for library.js.
+ */
 
 
 class Room {
@@ -13,8 +15,9 @@ class Room {
 
     // METHODS
 
-    // Method to print the room'
-    print() {
+    // Method to print the room's details.
+    print()
+    {
         console.log(`Room #: ${roomNumber}, Timeslot: ${timeSlot}, Max. Capacity: ${maxCapacity}, Booked: {$booked}, Link: ${link}.`)
     }
 }

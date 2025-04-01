@@ -1,7 +1,11 @@
-// Discord slash command that prints all server members with a specific role.
+/**
+ * @name: list.js
+ * @description: Discord slash command that prints all the server members with a specific role.
+ * @author: Anthony Choi with assistance from Yimming <Last Name>.
+ * 
+ * NOTE: Requires "PRESENCE INTENT" in the Discord Developer Portal to be enabled for full functionality.
+ */
 
-
-//*Requires "PRESENCE INTENT" in the Discord Developer Portal to be enabled for full functionality.
 
 
 // VARIABLES
@@ -26,10 +30,10 @@ module.exports = {
 	{
 		const focusedValue = interaction.options.getFocused().toLowerCase();
 
-		//Get roles from server.
+		//Gets roles from server.
 		const choices = Array.from(interaction.guild.roles.cache.map(m=>m.name));
 
-		//Setup role list for auto-complete.
+		//Sets up role list for auto-complete.
 		const filtered = choices.filter(choice => choice.toLowerCase().startsWith(focusedValue));
 		await interaction.respond(filtered.map(choice => (
 			{ 

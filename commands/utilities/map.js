@@ -1,4 +1,8 @@
-// Discord slash command that links to a QUT's campus maps.
+/**
+ * @name: map.js
+ * @description: Discord slash command that links to QUT's campus maps.
+ * @author: Anthony Choi with assistance from William Qu and Yimming <Last Name>.
+ */
 
 
 
@@ -14,7 +18,7 @@ module.exports =
 	// Sets up the command.
 	data: new SlashCommandBuilder()
 		.setName("map")
-		.setDescription("DMs the user a link to the map of the selected QUT campus."),
+		.setDescription("Returns the link to QUT's campus maps."),
 
 	// Enables the command's functionality.
 	async execute(interaction)
