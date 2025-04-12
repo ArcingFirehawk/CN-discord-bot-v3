@@ -1,13 +1,13 @@
 /**
  * @name: map.js
  * @description: Discord slash command that links to QUT's campus maps.
- * @author: Anthony Choi with assistance from William Qu and Yimming <Last Name>.
+ * @author: Anthony Choi. Assistance provided by William Qu and Yiming He.
  */
 
 
 
 // VARAIABLES
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const link = "https://www.qut.edu.au/about/campuses-and-facilities/maps-and-getting-here";
 let response;
 
@@ -27,7 +27,7 @@ module.exports =
 		await interaction.reply(
 		{
 			content: response,
-			ephemeral: true
+			flags: MessageFlags.Ephemeral
 		})
 	},
 };

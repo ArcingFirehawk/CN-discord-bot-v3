@@ -1,7 +1,7 @@
 /**
  * @name: list.js
  * @description: Discord slash command that prints all the server members with a specific role.
- * @author: Anthony Choi with assistance from Yimming <Last Name>.
+ * @author: Anthony Choi. Assistance provided by Yiming He.
  * 
  * NOTE: Requires "PRESENCE INTENT" in the Discord Developer Portal to be enabled for full functionality.
  */
@@ -9,7 +9,7 @@
 
 
 // VARIABLES
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 let memberArray = [];
 let role;
 let memberPersons;
@@ -70,9 +70,9 @@ module.exports = {
 		}
 
 		await interaction.reply(
-			{
-				content: memberPersons,
-				ephemeral: true
-			});
+		{
+			content: memberPersons,
+			flags: MessageFlags.Ephemeral
+		});
 	},
 };
