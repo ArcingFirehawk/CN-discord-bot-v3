@@ -3,12 +3,12 @@
  * @description: Discord slash command that returns information about the current capacity QUT's libraries.
  * @author: William Qu. Debugging and refactoring by Anthony Choi and Isaac Lee with assistance from Yiming He.
  * 
- * Issues: GP Law library doesn't work.
+ * Issues: GP Law library doesn't work. Needs to be tested when rooms are booked.
  * 
  * Features: Add the link for library spaces so user can check them.
  *     KG: https://spaces.library.qut.edu.au/mob/KG
  *     GP: https://spaces.library.qut.edu.au/mob/GP
- *     Law: https://spaces.library.qut.edu.au/mob/law
+ *     Law: https://spaces.library.qut.edu.au/mob/GP
  */
 
 
