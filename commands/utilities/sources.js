@@ -1,3 +1,11 @@
+/**
+ * @name: sources.js
+ * @description: Discord slash command that searches Google Scholar.
+ * @author: William Qu.
+ */
+
+
+
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder } = require('discord.js');
 const axios = require('axios'); // Use axios instead of request
 const cheerio = require('cheerio');
@@ -5,7 +13,7 @@ const cheerio = require('cheerio');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('sources')
-		.setDescription('Searches Google Schollar')
+		.setDescription('Searches Google Scholar')
 		.addStringOption(option =>
 			option.setName('campus')
 				.setDescription('Your Starting Campus')

@@ -1,10 +1,18 @@
+/**
+ * @name: unievents.js
+ * @description: Discord slash command that returns the upcoming events hosted by other clubs.
+ * @author: William Qu.
+ */
+
+
+
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const https = require("https");
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('unievents')
-		.setDescription('Upcomming events hosted by different clubs.'),
+		.setDescription('Upcoming events hosted by different clubs.'),
 	async execute(interaction) {
 		const url = 'https://api.hellorubric.com/';
 

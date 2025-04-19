@@ -129,7 +129,7 @@ module.exports = {
       			// 	Available Capacity = ${levelCapacity[level].currentAvailableCapacity}`);
 				// });
 
-				console.log(info)    // Console output for testing.
+				console.log(info)    // !!! Console output for testing.
 				await interaction.editReply(responseBuilder(info, option, url));
 			}
 		} catch (error) {

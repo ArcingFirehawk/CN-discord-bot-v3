@@ -1,3 +1,11 @@
+/**
+ * @name: bus.js
+ * @description: Discord slash command that returns information about the next QUT shuttle bus.
+ * @author: William Qu.
+ */
+
+
+
 const { DateTime } = require('luxon');
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder } = require('discord.js');
 const axios = require('axios'); // Use axios instead of request

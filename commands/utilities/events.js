@@ -1,3 +1,11 @@
+/**
+ * @name: events.js
+ * @description: Discord slash command that returns a list of Code Network's club events to the user.
+ * @author: William Qu.
+ */
+
+
+
 const { SlashCommandBuilder } = require('discord.js');
 const https = require("https");
 

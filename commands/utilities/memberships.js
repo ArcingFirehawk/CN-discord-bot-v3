@@ -1,3 +1,11 @@
+/**
+ * @name: memberships.js
+ * @description: Discord slash command that returns Code Network's membership information.
+ * @author: William Qu.
+ */
+
+
+
 const { SlashCommandBuilder } = require('discord.js');
 const https = require("https");
 

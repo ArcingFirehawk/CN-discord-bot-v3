@@ -1,3 +1,11 @@
+/**
+ * @name: play.js
+ * @description: Discord slash command that plays a song.
+ * @author: ?
+ */
+
+
+
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder } = require('discord.js');
 const axios = require('axios'); // Use axios instead of request
 const cheerio = require('cheerio');

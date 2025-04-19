@@ -1,3 +1,11 @@
+/**
+ * @name: news.js
+ * @description: Discord slash command that scrapes the latest news from Google News.
+ * @author: William Qu.
+ */
+
+
+
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder } = require('discord.js');
 const axios = require('axios'); // Use axios instead of request
 const cheerio = require('cheerio');

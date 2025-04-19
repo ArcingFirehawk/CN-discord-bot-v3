@@ -1,6 +1,6 @@
 /**
  * @name: encouragement.js
- * @description: Discord slash command that gives encouragement to the user.
+ * @description: Discord slash command that tells the user who made the Discord bot.
  * @author: William Qu. Documentation by Anthony Choi.
  */
 
