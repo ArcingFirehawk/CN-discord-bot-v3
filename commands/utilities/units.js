@@ -1,33 +1,43 @@
 /**
  * @name: units.js
  * @description: Discord slash command that returns a unit's information.
- * @author: William Qu.
+ * @author: William Qu. Debugging and refactoring by Anthony Choi.
  */
 
 
 
-const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder } = require('discord.js');
+// IMPORTS
 const axios = require('axios'); // Use axios instead of request
 const cheerio = require('cheerio');
+const Unit = require("../../classes/Unit.js");
 
+
+// VARIABLES
+const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder } = require('discord.js');
+let option;
+let response;
+let url;
+
+
+// COMMAND BUILDER
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('unit')
-		.setDescription('Returns information about a unit')
+		.setDescription('Returns information about a unit.')
 		.addStringOption(option =>
 			option.setName('unitcodeorname')
-				.setDescription('The code of the unit to lookup')
+				.setDescription('The code or name of the unit to lookup.')
 				.setRequired(true)),
 	async execute(interaction) {
-		// Reply to the interaction with a loading message
+		// Reply to the interaction with a loading message.
 		await interaction.reply({ content: '🔍 Searching for units...', ephemeral: true });
 
-		const option = interaction.options.getString('unitcodeorname');
-		const url = `https://qutvirtual4.qut.edu.au/web/qut/search?params.query=${option}&params.showOldUnits=true&profile=UNIT&params.stickyTabs=false&params.singleResultRedirect=false&params.sortKey=8`;
+		option = interaction.options.getString('unitcodeorname');
+		url = `https://qutvirtual4.qut.edu.au/web/qut/search?params.query=${option}&params.showOldUnits=true&profile=UNIT&params.stickyTabs=false&params.singleResultRedirect=false&params.sortKey=8`;
 
 		try {
 			// Fetch the HTML data
-			const response = await axios.get(url);
+			response = await axios.get(url);
 			const $ = cheerio.load(response.data);
 			$('.unit-details-heading').remove(); // Remove unnecessary elements
 
@@ -43,6 +53,8 @@ module.exports = {
 					value: adr,
 				});
 			});
+
+			// console.log("TEST1:\n" + info)    // !!! Console output for testing.
 
 			if (!info || info.length === 0) {
 				// If no results found
@@ -65,7 +77,7 @@ module.exports = {
 
 				// Update the reply with the select menu
 				const response = await interaction.editReply({
-					content: 'Choose your depression',
+					content: 'Select your unit.',
 					components: [row],
 				});
 
@@ -85,8 +97,8 @@ module.exports = {
 					await interaction.editReply({ content: 'Confirmation not received within 1 minute, cancelling', components: [] });
 				}
 
-async function getstuff(urls) {
-    const url = `https://qutvirtual4.qut.edu.au${urls}`;
+async function getstuff(urls) {    // !!! Move function up top.
+    const url = `https://qutvirtual4.qut.edu.au${urls}`;    // !!! Why do you need a 2nd url var? Scope issue?
     
     try {
         const response = await axios.get(url); // Wait for the HTTP request to complete
@@ -95,14 +107,27 @@ async function getstuff(urls) {
         // Remove unwanted <th> elements
         $('th').remove();
         
-        const year = $('.year-tab'); // Get the year element
-        const unitname = $('div#outline > h1:first'); // Get the unit name
+        const name = $('div#outline > h1:first');
+		const semester = $('dl.availabilities > dd');
+		const year = $('.year-tab');
         const campus = $('dl.availabilities > dt > strong');
-        const semester = $('dl.availabilities > dt dd');
-        const synopsis = $('div.tab-pane > div.p');
-        const credit = $('table.basicinfo > tbody > td:nth-child(3)');
-	const finaltext = `**[${unitname.text()} (${semester.text()} - ${year.text()})](<${url}>)** \n Offered: ${campus.text()} \n ${credit.text()} Credit Points \n Synopsis: ${synopsis.text()}`
+        const credit = $('table.basicinfo > tbody > tr:nth-child(4) > td');    // !!! Broken
+        const overview = $('div.tab-pane > div.p');
+        
+		// unit = new Unit(name, semester, year, campus, credit, overview);
+		unit = new Unit(name.text(), semester.text(), year.text(), campus.text(), credit.text(), overview.text());
+
+		// const finaltext = `**[${name.text()} (${semester.text()} ${year.text()})](<${url}>)**\nCampus(s): ${campus.text()}\nCredit Points: ${credit.text()}\n\n${overview.text()}`
+		const finaltext = `**[${unit.name} (${unit.semester} ${unit.year})](<${url}>)**\nCampus(es): ${unit.campus}\nCredit Points: ${unit.creditPoints}\n\n${unit.overview}`
+
         // You can also return unitname if you want to use it elsewhere
+
+		console.log(year + "\n" + name + "\n" + campus + "\n" + semester + "\n" + overview + "\n" + credit);    // !!! Console output for testing.
+
+
+		console.log("\n\n" + finaltext);    // !!! Console output for testing.
+
+
         return finaltext; // Return the extracted data
     } catch (error) {
         console.error('Error while fetching unit details:', error);

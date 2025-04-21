@@ -14,7 +14,7 @@ class Room {
         this.booked = booked;              // Boolean; is the room booked. 1 == Yes.
         this.link = link;                  // Web link
 
-        this.formatString;
+        this.formatString();
     }
 
 
