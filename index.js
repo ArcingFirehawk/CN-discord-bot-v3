@@ -10,6 +10,7 @@ const loggingStatus = process.env.LOGGING;
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildPresences] });
+// const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildPresences, Intents.FLAGS.GUILD_VOICE_STATES] });
 
 client.commands = new Collection();
 

@@ -16,9 +16,9 @@ const cheerio = require("cheerio");
 
 
 // VARIABLES
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 let option;
-let url;
+let urlProper;
 
 
 // FUNCTIONS
@@ -35,7 +35,7 @@ function urlBuilder(option) {
 }
 
 // Function that builds the final response to the user.
-function responseBuilder(Rooms, option, url) {
+function finalResponseBuilder(Rooms, option, url) {
 	const block = Rooms[0].roomNumber.charAt(3);
 	const time = Rooms[0].timeSlot;
 	const roomLength = Rooms.length;
@@ -70,16 +70,16 @@ module.exports = {
 		await interaction.reply(
 			{
 				content: "🔍 Analysing data...",
-				ephemeral: true
-				// flags: MessageFlags.Ephemeral    // !!! Not working.
+				// ephemeral: true
+				flags: MessageFlags.Ephemeral
 			});
 
 		option = interaction.options.getString('campus');
-		url = urlBuilder(option);
+		urlProper = urlBuilder(option);
 
 		try {
 			// Retrieves HTML data.
-			const response = await axios.get(url);
+			const response = await axios.get(urlProper);
 			const $ = cheerio.load(response.data);
 			$('.past').remove(); // Remove unnecessary elements
 			$('.fa-icon').remove();
@@ -130,7 +130,7 @@ module.exports = {
 				// });
 
 				console.log(info)    // !!! Console output for testing.
-				await interaction.editReply(responseBuilder(info, option, url));
+				await interaction.editReply(finalResponseBuilder(info, option, urlProper));
 			}
 		} catch (error) {
 			// Handle request or parsing errors

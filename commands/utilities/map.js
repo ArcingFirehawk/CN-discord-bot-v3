@@ -9,7 +9,7 @@
 // VARAIABLES
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const link = "https://www.qut.edu.au/about/campuses-and-facilities/maps-and-getting-here";
-let response;
+const response = `Here's the link to QUT's campus maps: ${link}`;
 
 
 // COMMAND BUILDER
@@ -23,7 +23,6 @@ module.exports =
 	// Enables the command's functionality.
 	async execute(interaction)
 	{
-		response = `Here's the link to QUT's campus maps: ${link}.`;
 		await interaction.reply(
 		{
 			content: response,

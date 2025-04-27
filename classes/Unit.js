@@ -6,21 +6,27 @@
 
 
 
-// IMPORTS
-const cheerio = require('cheerio');
-
-
 // CLASS
 class Unit {
-    constructor(name, semester, year, campus, creditPoints, overview) {
-        // this.code = code;    // Unit's code.
-        this.name = name;    // Unit's name.
-        this.semester = semester;    // Semester unit is being offered.
+    constructor(title, year, semester, campus, creditPoints, overview) {
+    // constructor(title, year = null, semester = null, campus = null, creditPoints = null, overview = null) {
+        this.code = title.slice(0, 6);    // Unit's code.
+
+        this.name = title.slice(7);    // Unit's name.
+        
+        // if-else statement to get the unit's name depending on what was given to it.
+        // if (this.title.search("-") == 7) {
+        //     this.name = title.slice(9);
+        // } else {
+        //     this.name = title.slice(7);
+        // }
+        
         this.year = year;    // Year unit is being offered.
+        this.semester = semester;    // Semester unit is being offered.
         this.campus = campus;    // Campus(s) where unit is offered.
-        this.creditPoints = creditPoints;    // Unit's credit points.
-        this.overview = overview;    // Unit's overview.
-        // this.link = link;    // Unit's link.
+        this.creditPoints = creditPoints;                                                  // Unit's credit points.
+        this.overview = overview;                                                          // Unit's overview.
+        this.link = `https://qutvirtual4.qut.edu.au/web/qut/unit?unitCode=${this.code}`    // Unit's link.
 
         this.formatString();
     }
@@ -31,31 +37,7 @@ class Unit {
     // Function that properly formats the unit's details.
     formatString()
     {
-        // this.name = this.name.text();
-        // this.semester = this.semester.text();
-        // this.year = this.year.text();
-        // this.campus = this.semester.text();
-        // this.creditPoints = this.semester.text();
-        // this.overview = this.semester.text();
-
-        this.print();
-
-        // !!! Switch case doesn't work.
-
-        // switch (this.semester) {
-        //     case this.semester.search("Semester 1") != -1:
-        //         this.semester = "Sem1";
-        //         break;
-        //     case this.semester.search("Semester 2") != -1:
-        //         this.semester = "Sem2";
-        //         break;
-        //     case this.semester.search("Semester 1, Semester 2") != -1:
-        //         this.semester = "Sem1, Sem2";
-        //         break;
-        //     default:
-        //         this.semester = "--";
-        // }
-
+        // if-else statement to format the semester value.
         if (this.semester.search("Semester 1, Semester 2") != -1) {
             this.semester = "Sem1, Sem2";
         } else if (this.semester.search("Semester 1") != -1) {
@@ -63,43 +45,25 @@ class Unit {
         } else if (this.semester.search("Semester 2") != -1) {
             this.semester = "Sem2";
         } else {
-            this.semester = "--";
+            if (this.semester.search("Summer") == -1)
+                this.semester = "--";
         }
-
-        // !!! Switch case doesn't work.
-
-        // switch (this.campus) {
-        //     case this.campus.search("Gardens Point") != -1:
-        //         this.campus = "GP";
-        //         break;
-        //     case this.campus.search("Kelvin Grove") != -1:
-        //         this.campus = "KG";
-        //         break;
-        //     default:
-        //         this.campus = "--";
-        // }
-
+        
+        // if-else statement to format the campus value.
         if (this.campus.search("Gardens Point") != -1) {
             this.campus = "GP";
         } else if (this.campus.search("Kelvin Grove") != -1) {
             this.campus = "KG";
         } else {
             this.campus = "--";
-        }        
-
-        // this.roomNumber = this.roomNumber.slice(0, 4) + "-" + this.roomNumber.slice(4);
-
-        // if (this.booked == 1) {
-        //     this.booked = "Yes";
-        // } else {
-        //     this.booked = "No";
-        // }
+        }
     }
 
-    // Method to print the room's details to console.
+    // Function to print the object's details to console.
     print()
     {
-        console.log(`Name: ${this.name}, Semester(s): ${this.semester}, Year: ${this.year}, Campus(es): ${this.campus}.`);
+        console.log(`\n\nCode: ${this.code}; Name: ${this.name}; Year: ${this.year}; Semester(s): ${this.semester}; ` + 
+                    `Campus(es): ${this.campus}; Credit Points: ${this.creditPoints}; \nLink: ${this.link}.\n\nOverview: ${this.overview}\n\n`);
     }
 }
 
