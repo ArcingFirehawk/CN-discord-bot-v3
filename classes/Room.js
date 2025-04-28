@@ -7,29 +7,23 @@
 
 
 class Room {
-    constructor(roomNumber, timeSlot, maxCapacity, booked, link) {
+    constructor(roomNumber, timeSlot, maxCapacity, isBooked, link) {
         this.roomNumber = roomNumber;      // Campus, block, floor, and room number (e.g. GP-V-101).
         this.timeSlot = timeSlot;          // Start time.
         this.maxCapacity = maxCapacity;    // Maximum capacity of room.
-        this.booked = booked;              // Boolean; is the room booked. 1 == Yes.
-        this.link = link;                  // Web link
+        this.isBooked = isBooked;          // Boolean; Is the room booked?
+        this.link = link;                  // Web link.
 
         this.formatString();
     }
 
 
-    // METHODS
+    // FUNCTIONS
 
     // Method that properly formats the room number (e.g. GP-V101 to GP-V-101).
     formatString()
     {
         this.roomNumber = this.roomNumber.slice(0, 4) + "-" + this.roomNumber.slice(4);
-
-        // if (this.booked == 1) {
-        //     this.booked = "Yes";
-        // } else {
-        //     this.booked = "No";
-        // }
     }
 
     // Method to print the room's details to console.

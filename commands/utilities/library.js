@@ -3,7 +3,7 @@
  * @description: Discord slash command that returns information about a library's current capacity.
  * @author: William Qu. Debugging and refactoring by Anthony Choi and Isaac Lee with assistance from Yiming He.
  * 
- * Issues: Needs to be tested when rooms are booked (might not be picking up when rooms are booked).
+ * ISSUES: Round up isBooked percentage.
  */
 
 
@@ -42,7 +42,7 @@ function finalResponseBuilder(Rooms, option, url) {
 
 	Rooms.forEach(element => {
 		if (element.booked == 1)
-			numBooked++;
+			numBooked++;		
 	});
 
 	return `The ${option} library's (${block}-block) current individual room capacity at ${time} is ${(numBooked / roomLength) * 100}%.\r\nHere's the link that shows all of its available rooms: ${url}.`;
@@ -69,7 +69,6 @@ module.exports = {
 		await interaction.reply(
 			{
 				content: "🔍 Analysing data...",
-				// ephemeral: true
 				flags: MessageFlags.Ephemeral
 			});
 
@@ -77,7 +76,7 @@ module.exports = {
 		urlProper = urlBuilder(option);
 
 		try {
-			// Retrieves HTML data.
+			// Gets HTML data.
 			const response = await axios.get(urlProper);
 			const $ = cheerio.load(response.data);
 			$('.past').remove(); // Remove unnecessary elements
@@ -90,19 +89,14 @@ module.exports = {
 				const adr = $(element).find('a').attr('href');
 				const capacity = $(element).find('a > .room > span').text().replace(" ", "");
 				const time = $(element).find('a > .room_booking > ul > li').attr('title');
-				const booked = $(element).find('booked').length;    // !!! Needs to be changed to pick up if the room is actually booked?.
-
-				// let booked;
+				let booked;
 				
-				// if ($(element).find('booked > ul > li').attr("class") == "booked current quarter") {
-				// 	// console.log(element);
-				// 	booked = 1;
-				// } else {
-				// 	// console.log(element);
-				// 	booked = 0;
-				// }
-
-				// console.log("\n\n" + room + "\n" + "booked var: " + booked + "\n");
+				// if-else statement to determine if a room is booked for the current time.
+				if ($(element).find('a > .room_booking > ul > li').attr("class").search("booked current") != -1) {
+					booked = true;
+				} else {
+					booked = false;
+				}
 
 				info.push((new Class(room, time, capacity, booked, adr)))
 			});
