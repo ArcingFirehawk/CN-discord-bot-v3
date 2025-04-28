@@ -4,13 +4,12 @@
  * @author: William Qu. Debugging and refactoring by Anthony Choi and Isaac Lee with assistance from Yiming He.
  * 
  * Issues: Needs to be tested when rooms are booked (might not be picking up when rooms are booked).
- * 		   For some reason `flags: MessageFlags.Ephemeral` doesn't work.
  */
 
 
 
 // IMPORTS
-const roomClass = require("../../classes/Room.js");
+const Class = require("../../classes/Room.js");
 const axios = require("axios");    // Use axios instead of request.
 const cheerio = require("cheerio");
 
@@ -86,59 +85,36 @@ module.exports = {
 			const info = [];
 
 			// Gets information from the website.
-			$('.room_wrapper').each(function (index, element) {    // !!! Why isn't index being used here?
+			$('.room_wrapper').each(function (element) {    // !!! Why isn't index being used here?
 				const room = $(element).find('a > .room > h3 ').text();
 				const adr = $(element).find('a').attr('href');
 				const capacity = $(element).find('a > .room > span').text().replace(" ", "");
 				const time = $(element).find('a > .room_booking > ul > li').attr('title');
-				const booked = $(element).find('booked').length;    // !!! Needs to be changed to pick up if the room is actually booked?.
+				let booked;
+				
+				if ($(element).find('booked > ul > li').attr("class") == "booked current quarter") {
+					booked = 1;
+				} else {
+					booked = 0;
+				}
 
-				info.push((new roomClass(room, time, capacity, booked, adr)))
+				console.log("\n\n\n" + room + "\n" + "booked var: " + booked);
+				// const booked = $(element).find('booked').length;    // !!! Needs to be changed to pick up if the room is actually booked?
+
+				info.push((new Class(room, time, capacity, booked, adr)))
 			});
 			
 			// Checks if info is null. If null, fails.
 			if (!info || info.length === 0) {
-				// If no results found
-				await interaction.editReply(
-					{
-						content: 'Hmmm, we had trouble getting the data.'
-					});
+				await interaction.editReply("Hmmm, we had trouble getting the data.");
 			} else {
-
-				// !!! What does the following do and is it necessary anymore?
-				// const levelCapacity = {};
-				// levels.forEach(room => {
-				// 	const levelKey = room.level;
-				// 	if (!levelCapacity[levelKey]) {
-				// 		levelCapacity[levelKey] = {
-				// 			totalCapacity: 0,
-				// 			currentAvailableCapacity: 0
-				// 		};
-				// 	}
-				// 	levelCapacity[levelKey].totalCapacity += room.capacity;
-				// 	if (room.availableSlots > 0) {
-				// 		levelCapacity[levelKey].currentAvailableCapacity += room.capacity;
-				// 	}
-				// });
-
-				// Example usage:
-				// console.log("Total and Available Capacity per Level:");
-				// Object.keys(levelCapacity).forEach(level => {
-				// 	console.log(`Level ${level}: 
-      			// 	Total Capacity = ${levelCapacity[level].totalCapacity}, 
-      			// 	Available Capacity = ${levelCapacity[level].currentAvailableCapacity}`);
-				// });
-
-				console.log(info)    // !!! Console output for testing.
 				await interaction.editReply(finalResponseBuilder(info, option, urlProper));
 			}
+
 		} catch (error) {
 			// Handle request or parsing errors
 			console.error('Error while fetching unit data:', error);
-			await interaction.editReply(
-				{
-					content: "Hmmm, Something went wrong."
-				});
+			await interaction.editReply("Hmmm, Something went wrong.");
 		}
 	},
 };
