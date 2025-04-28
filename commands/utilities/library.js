@@ -85,21 +85,24 @@ module.exports = {
 			const info = [];
 
 			// Gets information from the website.
-			$('.room_wrapper').each(function (element) {    // !!! Why isn't index being used here?
+			$('.room_wrapper').each(function (index, element) {    // !!! Why isn't index being used here?
 				const room = $(element).find('a > .room > h3 ').text();
 				const adr = $(element).find('a').attr('href');
 				const capacity = $(element).find('a > .room > span').text().replace(" ", "");
 				const time = $(element).find('a > .room_booking > ul > li').attr('title');
-				let booked;
-				
-				if ($(element).find('booked > ul > li').attr("class") == "booked current quarter") {
-					booked = 1;
-				} else {
-					booked = 0;
-				}
+				const booked = $(element).find('booked').length;    // !!! Needs to be changed to pick up if the room is actually booked?.
 
-				console.log("\n\n\n" + room + "\n" + "booked var: " + booked);
-				// const booked = $(element).find('booked').length;    // !!! Needs to be changed to pick up if the room is actually booked?
+				// let booked;
+				
+				// if ($(element).find('booked > ul > li').attr("class") == "booked current quarter") {
+				// 	// console.log(element);
+				// 	booked = 1;
+				// } else {
+				// 	// console.log(element);
+				// 	booked = 0;
+				// }
+
+				// console.log("\n\n" + room + "\n" + "booked var: " + booked + "\n");
 
 				info.push((new Class(room, time, capacity, booked, adr)))
 			});
@@ -110,7 +113,7 @@ module.exports = {
 			} else {
 				await interaction.editReply(finalResponseBuilder(info, option, urlProper));
 			}
-
+			
 		} catch (error) {
 			// Handle request or parsing errors
 			console.error('Error while fetching unit data:', error);
