@@ -15,6 +15,7 @@ class Room {
         this.link = link;                  // Web link.
 
         this.formatString();
+        this.print();    // !!! Console output for testing.
     }
 
 

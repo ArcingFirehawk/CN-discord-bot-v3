@@ -3,7 +3,7 @@
  * @description: Discord slash command that returns information about a library's current capacity.
  * @author: William Qu. Debugging and refactoring by Anthony Choi and Isaac Lee with assistance from Yiming He.
  * 
- * ISSUES: Round up isBooked percentage.
+ * ISSUES: Round up isBooked. the isBooked var is undefined.
  */
 
 
@@ -35,17 +35,24 @@ function urlBuilder(option) {
 
 // Function that builds the final response to the user.
 function finalResponseBuilder(Rooms, option, url) {
+	// LOCAL VARIABLES
 	const block = Rooms[0].roomNumber.charAt(3);
 	const time = Rooms[0].timeSlot;
 	const roomLength = Rooms.length;
 	let numBooked = 0;
+	let bookedPercent;
 
 	Rooms.forEach(element => {
 		if (element.booked == 1)
 			numBooked++;		
 	});
 
-	return `The ${option} library's (${block}-block) current individual room capacity at ${time} is ${(numBooked / roomLength) * 100}%.\r\nHere's the link that shows all of its available rooms: ${url}.`;
+	bookedPercent = (numBooked / roomLength) * 100;
+	bookedPercent = (Math.round(bookedPercent * 100) / 100).toFixed(2);
+
+	return `The ${option} library's (${block}-block) current individual room capacity at ` 
+		 + `${time} is ${(numBooked / roomLength) * 100}% or ${bookedPercent}%.\nHere's `    // Edit to only show 1 percent after testing.
+		 + `the link that shows all of its available rooms: ${url}.`;
 }
 
 
@@ -92,7 +99,7 @@ module.exports = {
 				let booked;
 				
 				// if-else statement to determine if a room is booked for the current time.
-				if ($(element).find('a > .room_booking > ul > li').attr("class").search("booked current") != -1) {
+				if ($(element).find('a > .room_booking > ul > li').attr("class").search("booked") != -1) {
 					booked = true;
 				} else {
 					booked = false;
