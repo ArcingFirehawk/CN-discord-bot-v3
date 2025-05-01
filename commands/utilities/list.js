@@ -8,8 +8,11 @@
 
 
 
-// VARIABLES
+// IMPORTS
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
+
+
+// VARIABLES
 let memberArray = [];
 let role;
 let memberPersons;

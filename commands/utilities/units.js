@@ -9,13 +9,13 @@
 
 
 // IMPORTS
+const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder, MessageFlags } = require('discord.js');
 const axios = require('axios'); // Use axios instead of request
 const cheerio = require('cheerio');
 const Unit = require("../../classes/Unit.js");
 
 
 // GLOBAL VARIABLES
-const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder, MessageFlags } = require('discord.js');
 let response;
 let urlUnit;    // Unit's url.
 const selectMenuUnits = [];    // Array to store the results of the search query.

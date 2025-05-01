@@ -6,9 +6,12 @@
 
 
 
+// IMPORTS
+const { SlashCommandBuilder } = require("discord.js");
+
+
 // VARIABLES
-const { SlashCommandBuilder } = require('discord.js');
-const message = "Made with ❤️ by the Code Network Team (2025).";
+const message = "Made with ❤️ by the Code Network Team.";
 
 
 // COMMAND BUILDER

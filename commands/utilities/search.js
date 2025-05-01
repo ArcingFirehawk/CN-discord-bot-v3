@@ -6,8 +6,11 @@
 
 
 
-const { SlashCommandBuilder } = require('discord.js');
+// IMPORTS
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 
+
+// COMMAND BUILDER
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('search')

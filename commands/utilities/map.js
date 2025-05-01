@@ -6,8 +6,11 @@
 
 
 
-// VARAIABLES
+// IMPORTS
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
+
+
+// VARAIABLES
 const link = "https://www.qut.edu.au/about/campuses-and-facilities/maps-and-getting-here";
 const response = `Here's the link to QUT's campus maps: ${link}`;
 

@@ -6,8 +6,11 @@
 
 
 
+// IMPORTS
 const { SlashCommandBuilder } = require('discord.js');
 
+
+// COMMAND BUILDER
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ping')

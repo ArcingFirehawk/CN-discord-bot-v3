@@ -6,9 +6,12 @@
 
 
 
+// IMPORTS
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const https = require("https");
 
+
+// COMMAND BUILDER
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('unievents')

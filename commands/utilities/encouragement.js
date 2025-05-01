@@ -6,8 +6,11 @@
 
 
 
+// IMPORTS
+const { SlashCommandBuilder } = require("discord.js");
+
+
 // VARIABLES
-const { SlashCommandBuilder } = require('discord.js');
 const message = "https://tenor.com/view/gif-gif-19494503";
 
 

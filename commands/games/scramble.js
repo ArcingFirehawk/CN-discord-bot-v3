@@ -6,9 +6,12 @@
 
 
 
+// IMPORTS
 const { SlashCommandBuilder, PermissionsBitField, Interaction } = require('discord.js');
 const { GetRandom, GetScramble } = require("../../utils/scramble.js");
 
+
+// COMMAND BUILDER
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('scramble')

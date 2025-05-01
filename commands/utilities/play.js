@@ -6,8 +6,9 @@
 
 
 
-const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder } = require('discord.js');
-const axios = require('axios'); // Use axios instead of request
+// IMPORTS
+const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder, MessageFlags } = require('discord.js');
+const axios = require('axios');
 const cheerio = require('cheerio');
 const { joinVoiceChannel, getVoiceConnection, createAudioPlayer, NoSubscriberBehavior, demuxProbe, createAudioResource, StreamType } = require('@discordjs/voice');
 const ytdl = require('@distube/ytdl-core');
@@ -19,6 +20,8 @@ const { join } = require('node:path');
 const http = require('http');
 const fs = require("fs");
 
+
+// COMMAND BUILDER
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('play')

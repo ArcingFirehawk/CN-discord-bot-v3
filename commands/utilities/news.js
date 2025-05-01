@@ -6,10 +6,13 @@
 
 
 
-const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder } = require('discord.js');
-const axios = require('axios'); // Use axios instead of request
-const cheerio = require('cheerio');
+// IMPORTS
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
+const axios = require("axios");
+const cheerio = require("cheerio");
 
+
+// COMMAND BUILDER
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('news')

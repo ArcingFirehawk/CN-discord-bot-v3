@@ -6,9 +6,12 @@
 
 
 
-const { SlashCommandBuilder } = require('discord.js');
+// IMPORTS
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const https = require("https");
 
+
+// COMMAND BUILDER
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('events')

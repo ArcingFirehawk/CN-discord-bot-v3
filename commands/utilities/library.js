@@ -7,10 +7,10 @@
 
 
 // IMPORTS
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const Room = require("../../classes/Room.js");
-const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 
 
 // GLOBAL VARIABLES
