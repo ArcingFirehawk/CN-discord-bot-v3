@@ -2,20 +2,18 @@
  * @name: library.js
  * @description: Discord slash command that returns information about a library's current capacity.
  * @author: William Qu. Debugging and refactoring by Anthony Choi and Isaac Lee with assistance from Yiming He.
- * 
- * ISSUES: Round up isBooked. the isBooked var is undefined.
  */
 
 
 
 // IMPORTS
-const Class = require("../../classes/Room.js");
-const axios = require("axios");    // Use axios instead of request.
+const axios = require("axios");
 const cheerio = require("cheerio");
-
-
-// VARIABLES
+const Room = require("../../classes/Room.js");
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
+
+
+// GLOBAL VARIABLES
 let option;
 let urlProper;
 
@@ -26,33 +24,36 @@ let urlProper;
 function urlBuilder(option) {
 	let url = `https://spaces.library.qut.edu.au/mob/${option}`;
 	
-	if (option == "Law") {
+	if (option == "Law")
 		url = url.toLowerCase();
-	}
 
 	return url;
 }
 
 // Function that builds the final response to the user.
 function finalResponseBuilder(Rooms, option, url) {
-	// LOCAL VARIABLES
-	const block = Rooms[0].roomNumber.charAt(3);
-	const time = Rooms[0].timeSlot;
+	const block = Rooms[0].number.charAt(3);
+	const time = Rooms[0].startTime;
+
+	return `The ${option} library's (${block}-block) current individual room capacity at ` 
+		 + `${time} is ${percentageCalc(Rooms)}%.\nHere's the link that shows all of its available rooms: ${url}.`;
+}
+
+// Function that calculates the percentage of booked rooms.
+function percentageCalc(Rooms) {
 	const roomLength = Rooms.length;
 	let numBooked = 0;
 	let bookedPercent;
 
 	Rooms.forEach(element => {
-		if (element.booked == 1)
+		if (element.isBooked === true)
 			numBooked++;		
 	});
 
 	bookedPercent = (numBooked / roomLength) * 100;
 	bookedPercent = (Math.round(bookedPercent * 100) / 100).toFixed(2);
 
-	return `The ${option} library's (${block}-block) current individual room capacity at ` 
-		 + `${time} is ${(numBooked / roomLength) * 100}% or ${bookedPercent}%.\nHere's `    // Edit to only show 1 percent after testing.
-		 + `the link that shows all of its available rooms: ${url}.`;
+	return bookedPercent;
 }
 
 
@@ -86,37 +87,35 @@ module.exports = {
 			// Gets HTML data.
 			const response = await axios.get(urlProper);
 			const $ = cheerio.load(response.data);
-			$('.past').remove(); // Remove unnecessary elements
+
+			$('.past').remove();    // Remove unnecessary elements.
 			$('.fa-icon').remove();
-			const info = [];
+			const roomArray = [];
 
 			// Gets information from the website.
-			$('.room_wrapper').each(function (index, element) {    // !!! Why isn't index being used here?
-				const room = $(element).find('a > .room > h3 ').text();
-				const adr = $(element).find('a').attr('href');
-				const capacity = $(element).find('a > .room > span').text().replace(" ", "");
-				const time = $(element).find('a > .room_booking > ul > li').attr('title');
-				let booked;
-				
-				// if-else statement to determine if a room is booked for the current time.
-				if ($(element).find('a > .room_booking > ul > li').attr("class").search("booked") != -1) {
-					booked = true;
-				} else {
-					booked = false;
-				}
+			$('.room_wrapper').each(function (index, element) {
+				const roomNumber = $(element).find('a > .room > h3 ').text();
+				const startTime = $(element).find('a > .room_booking > ul > li').attr('title');
+				const maxCapacity = $(element).find('a > .room > span').text().replace(" ", "");
+				let isBooked = false;
+				const roomUrl = $(element).find('a').attr('href');
 
-				info.push((new Class(room, time, capacity, booked, adr)))
+				// if-else statement to determine if a room is booked for the current time.
+				if ($(element).find("a > .room_booking > ul > li").attr("class") === "booked current")
+					isBooked = true;
+
+				roomArray.push(new Room(roomNumber, startTime, maxCapacity, isBooked, roomUrl))
 			});
 			
-			// Checks if info is null. If null, fails.
-			if (!info || info.length === 0) {
+			// if-else statement that checks if roomArray is null.
+			if (!roomArray || roomArray.length === 0) {
 				await interaction.editReply("Hmmm, we had trouble getting the data.");
 			} else {
-				await interaction.editReply(finalResponseBuilder(info, option, urlProper));
+				await interaction.editReply(finalResponseBuilder(roomArray, option, urlProper));
 			}
 			
 		} catch (error) {
-			// Handle request or parsing errors
+			// Handle request or parsing errors.
 			console.error('Error while fetching unit data:', error);
 			await interaction.editReply("Hmmm, Something went wrong.");
 		}

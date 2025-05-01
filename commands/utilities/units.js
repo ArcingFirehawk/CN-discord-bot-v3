@@ -18,7 +18,7 @@ const Unit = require("../../classes/Unit.js");
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, SlashCommandBuilder, MessageFlags } = require('discord.js');
 let response;
 let urlUnit;    // Unit's url.
-let selectMenuUnits = [];    // Array to store the results of the search query.
+const selectMenuUnits = [];    // Array to store the results of the search query.
 
 
 // FUNCTIONS
@@ -63,7 +63,7 @@ async function getstuff(urls) {    // !!! Why async function?
 
 
 
-// Function that builds the final response to the user.
+// Function that builds the final response to the user. !!! Hasn't been change for this command.
 function finalResponseBuilder(Unit, url) {
 	const block = Rooms[0].roomNumber.charAt(3);
 	const time = Rooms[0].timeSlot;
@@ -120,18 +120,20 @@ module.exports = {
 				
 				// selectMenuUnits.push(new Unit(qdata));
 
-				selectMenuUnits.push({
-					label: qdata,
-					// label: `${$(element).find('h4 > a').text()}`,    // (${$(element).find('.unit-details > li:first').text()} - ${qdata.year})`,
-					// description: `${$(element).find('.unit-details > .unit-details-location').text()} - ${$(element).find('.unit-details > .unit-details-attendance-mode').text()} (${$(element).find('.unit-details > .unit-details-startDate').text()} - ${$(element).find('.unit-details > .unit-details-endDate').text()})`,
-					value: adr,
-				});
+				selectMenuUnits.push(new Unit(qdata, null, null, null, null, null))
+
+				// selectMenuUnits.push({
+				// 	label: qdata,
+				// 	// label: `${$(element).find('h4 > a').text()}`,    // (${$(element).find('.unit-details > li:first').text()} - ${qdata.year})`,
+				// 	// description: `${$(element).find('.unit-details > .unit-details-location').text()} - ${$(element).find('.unit-details > .unit-details-attendance-mode').text()} (${$(element).find('.unit-details > .unit-details-startDate').text()} - ${$(element).find('.unit-details > .unit-details-endDate').text()})`,
+				// 	value: adr,
+				// });
 
 				
 			});
 
 			
-			console.log(`info: ${selectMenuUnits}`);    // !!! Console output for testing.
+			console.log(`info: ${selectMenuUnits[0]}`);    // !!! Console output for testing.
 
 			// console.log("TEST1:\n" + info)    // !!! Console output for testing.
 
@@ -146,9 +148,8 @@ module.exports = {
 					.addOptions(
 						selectMenuUnits.map(item => {
 							return new StringSelectMenuOptionBuilder()
-								.setLabel(item.label)
-								// .setDescription(item.description)
-								.setValue(item.value);
+								.setLabel(`${item.code} ${item.name}`)
+								.setValue(item.link);
 						})
 					);
 
@@ -156,8 +157,8 @@ module.exports = {
 
 				// Update the reply with the select menu
 				const response = await interaction.editReply({
-					content: 'Select your unit.',
-					components: [row],
+					content: 'Select your unit:',
+					components: [row]
 				});
 
 				// Collector filter to ensure the user is interacting
