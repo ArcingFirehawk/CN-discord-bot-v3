@@ -6,11 +6,16 @@
 
 
 
+// IMPORTS
 const { SlashCommandBuilder, PermissionsBitField, Interaction } = require('discord.js');
 const { GetWordle, checkGuess, checkExist } = require("../../utils/worldle.js");
 
+
+// GLOBAL VARIABLES
 const maxGuess = 6;
 
+
+// COMMAND BUILDER
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('wordle')
