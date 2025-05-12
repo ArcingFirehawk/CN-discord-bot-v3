@@ -8,7 +8,7 @@
 
 
 
-// VARIABLES
+// GLOBAL VARIABLES
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const { generateDependencyReport, AudioPlayerStatus, joinVoiceChannel, createAudioPlayer, createAudioResource } = require("@discordjs/voice");
 const config = require("../../config.json");
@@ -19,14 +19,19 @@ module.exports = {
 		.setName("sfx")
 		.setDescription("Plays a random sound effect or voiceline in a voice channel."),
 
-	async execute(interaction, client) {
+	async execute(interaction) {
 		// LOCAL VARIABLES
+		const guildId = config.guildId;
+		// const guild = client.guild.cache.get(guildId);
+		// const guild = interaction.client.guild.fetch(guildId);
 		const voiceChannelId = config.voiceChannelId;
-		const voiceChannel = client.channels.cache.get(voiceChannelId);
-		// const voiceChannel = "General";
-		const guildID = config.guildId;
+		console.log("Channel ID: ", voiceChannelId);
+		console.log("Guild ID: ", guildId);
+		// const voiceChannel = client.channels.cache.get(voiceChannelId);
+		// const voiceChannel = guild.channels.fetch(voiceChannelId);
+		// const voiceChannel = interaction.guild.channels.cache.get(voiceChannelId);
+		const voiceChannel = interaction.client.channels.fetch(voiceChannelId);
 		const player = createAudioPlayer();    // Creates the audio player.
-		
 
 		player.on(AudioPlayerStatus.Playing, () => {
 			console.log("An audio file is being played.");
@@ -36,15 +41,14 @@ module.exports = {
 			console.error(`ERROR: ${error.message}`);
 		});
 
-		// const resource = createAudioResource(".mp3");    // Reintroduce when ready.
+		const resource = createAudioResource("cc3-juggernaut-voiceline1.mp3");    // Reintroduce when ready.
 		player.play(resource);
 
 		const connection = joinVoiceChannel({
 			channelId: voiceChannelId,
-			// guildId: GUILD_ID,
 			guildId: guildId,
 			// adapterCreator: voiceChannel.guild.voiceAdapterCreator
-			adapterCreator: voiceChannel.guild.voiceAdapterCreator,
+			adapterCreator: voiceChannel.guild.voiceAdapterCreator
 		});
 
 		interaction.reply({
