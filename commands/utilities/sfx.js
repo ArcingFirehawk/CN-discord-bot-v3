@@ -3,7 +3,7 @@
  * @description: Discord slash command that plays a random local voiceline.
  * @author: Anthony Choi.
  * 
- * Packages: @discordjs/voice, ffmpeg-static.
+ * Packages: @discordjs/voice, libsodium-wrappers, ffmpeg-static.
  */
 
 
@@ -11,21 +11,23 @@
 // VARIABLES
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const { generateDependencyReport, AudioPlayerStatus, joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayer } = require("@discordjs/voice");
-// const condig = require("../config.json");
+// const config = require("../config.json");
+// const config = require("../../.env");
 
 // COMMAND BUILDER
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("sfx")
-		.setDescription("Plays a random voiceline in a voice channel. If you can guess where's it's from, you get a cookie."),
+		.setDescription("Plays a random sound effect or voiceline in a voice channel."),
 
 	async execute(interaction, client) {
 		// LOCAL VARIABLES
 		// const voiceChannelId = config.audioChannelId;
-		const voiceChannelId = 1267389187729129486;
+		const voiceChannelId = 0;    // !!! Need to add.
 		// const voiceChannel = client.channels.cache.get(voiceChannelId);
 		const voiceChannel = "General";
 		// const guildID = config.guildId;
+		const guildId = 0;    // !!! Need to add.
 		const player = createAudioPlayer();    // Creates the audio player.
 		
 
@@ -37,14 +39,15 @@ module.exports = {
 			console.error(`ERROR: ${error.message}`);
 		});
 
-		const resource = createAudioResource("audio\cc3-juggernaut-voiceline1.mp3");
+		// const resource = createAudioResource(".mp3");    // Reintroduce when ready.
 		player.play(resource);
 
 		const connection = joinVoiceChannel({
 			channelId: voiceChannelId,
-			// guildId: guildId,
+			// guildId: GUILD_ID,
+			guildId: guildId,
 			// adapterCreator: voiceChannel.guild.voiceAdapterCreator
-			adapterCreator: voiceChannel.guild.voiceAdapterCreator
+			adapterCreator: voiceChannel.guild.voiceAdapterCreator,
 		});
 
 		interaction.reply({
