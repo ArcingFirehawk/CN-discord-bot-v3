@@ -10,10 +10,9 @@
 
 // VARIABLES
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
-const { generateDependencyReport, AudioPlayerStatus, joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayer } = require("@discordjs/voice");
-// const config = require("../config.json");
-// const config = require("../../.env");
-
+const { generateDependencyReport, AudioPlayerStatus, joinVoiceChannel, createAudioPlayer, createAudioResource } = require("@discordjs/voice");
+const config = require("../../config.json");
+ 
 // COMMAND BUILDER
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -22,12 +21,10 @@ module.exports = {
 
 	async execute(interaction, client) {
 		// LOCAL VARIABLES
-		// const voiceChannelId = config.audioChannelId;
-		const voiceChannelId = 0;    // !!! Need to add.
-		// const voiceChannel = client.channels.cache.get(voiceChannelId);
-		const voiceChannel = "General";
-		// const guildID = config.guildId;
-		const guildId = 0;    // !!! Need to add.
+		const voiceChannelId = config.voiceChannelId;
+		const voiceChannel = client.channels.cache.get(voiceChannelId);
+		// const voiceChannel = "General";
+		const guildID = config.guildId;
 		const player = createAudioPlayer();    // Creates the audio player.
 		
 
