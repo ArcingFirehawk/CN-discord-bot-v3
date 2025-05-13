@@ -13,11 +13,48 @@
 // IMPORTS
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const { generateDependencyReport, AudioPlayerStatus, joinVoiceChannel, createAudioPlayer, createAudioResource } = require("@discordjs/voice");
+const fs = require('fs');
 const AudioFile = require("../../classes/AudioFile.js");
 
 
 // GLOBAL VARIABLES
 const config = require("../../config.json");    // !!! Use .env instead?
+
+
+
+// FUNCTIONS
+
+// Function to get all locally stored audio files.
+function getAudioResources() {
+	const fileArray = fs.readdirSync("audio");
+	let filePathArray = [];
+
+	for (let i = 0; i < fileArray.length; i++) {
+		filePathArray[i] = "/audio/" + fileArray[i];
+	}
+	
+	return filePathArray;
+}
+
+// Function that creates the AudioFile object(s).
+function createAudioObjects() {
+    let filePathArray = getAudioResources();
+	let objArray = [];
+
+	filePathArray.forEach(element => {
+    objArray.push(new AudioFile(element));
+	});
+
+	return objArray;
+}
+
+// Function that chooses a random AudioFile object.
+function chooseAudioFile() {
+	let objArray = createAudioObjects();
+	let index = Math.floor(Math.random() * objArray.length);
+
+    return objArray[index];
+}
 
 
 // COMMAND BUILDER
@@ -41,6 +78,9 @@ module.exports = {
 		const voiceChannel = interaction.client.channels.fetch(voiceChannelId);
 		const player = createAudioPlayer();    // Creates the audio player.
 		
+		const objArray = createAudioObjects();
+		const resource = createAudioResource(objArray[2].filePath);
+		
 
 		player.on(AudioPlayerStatus.Playing, () => {
 			console.log("An audio file is being played.");
@@ -50,7 +90,8 @@ module.exports = {
 			console.error(`ERROR: ${error.message}`);
 		});
 
-		const resource = createAudioResource("cc3-juggernaut-voiceline3.mp3");    // Reintroduce when ready.
+		
+		
 		player.play(resource);
 
 		const connection = joinVoiceChannel({
