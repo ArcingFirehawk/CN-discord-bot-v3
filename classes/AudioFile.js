@@ -8,9 +8,9 @@
 
 // CLASS
 class AudioFile {
-    constructor(name, directory) {
+    constructor(name, path) {
         this.name = name;
-        this.directory = directory;
+        this.path = path;
 
         this.formatObject();
     }
@@ -18,7 +18,7 @@ class AudioFile {
 
     // FUNCTIONS
 
-    // Function that properly formats the object's details.
+    // Function that properly formats the object's details. !!! Not changed for this class.
     formatObject()
     {
         // if-else statement that checks if object is for selector menu or final response.

@@ -13,11 +13,11 @@
 // IMPORTS
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const { generateDependencyReport, AudioPlayerStatus, joinVoiceChannel, createAudioPlayer, createAudioResource } = require("@discordjs/voice");
-const AudioFile = require("../../classes/AudioFile.js");
+const AudioFile = require("../../classes/AudioFile.js");    // Use File class?
 
 
 // GLOBAL VARIABLES
-const config = require("../../config.json");
+const config = require("../../config.json");    // !!! Use .env instead?
 
 
 // COMMAND BUILDER
@@ -40,6 +40,7 @@ module.exports = {
 		// const voiceChannel = interaction.guild.channels.cache.get(voiceChannelId);
 		const voiceChannel = interaction.client.channels.fetch(voiceChannelId);
 		const player = createAudioPlayer();    // Creates the audio player.
+		
 
 		player.on(AudioPlayerStatus.Playing, () => {
 			console.log("An audio file is being played.");
