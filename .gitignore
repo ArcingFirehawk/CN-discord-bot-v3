@@ -4,6 +4,7 @@ package.json
 package-lock.json
 config.json
 test.js
+audio1.mp3
 
 # Logs
 logs

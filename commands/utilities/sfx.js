@@ -13,7 +13,7 @@
 // IMPORTS
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const { generateDependencyReport, AudioPlayerStatus, joinVoiceChannel, createAudioPlayer, createAudioResource } = require("@discordjs/voice");
-const AudioFile = require("../../classes/AudioFile.js");    // Use File class?
+const AudioFile = require("../../classes/AudioFile.js");
 
 
 // GLOBAL VARIABLES

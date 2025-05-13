@@ -56,7 +56,7 @@ class AudioFile {
     // Function to print the object's details to console.
     print()
     {
-        console.log(`File Name: ${this.name}; File Directory: ${this.directory}.`);
+        console.log(`File Name: ${this.name}; File Path: ${this.filePath}.`);
     }
 }
 
