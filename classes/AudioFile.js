@@ -6,11 +6,16 @@
 
 
 
-// CLASS
+// IMPORTS
+// const fs = require('fs');
+const path = require("path");
+
+
+// CONSTRUCTOR
 class AudioFile {
-    constructor(name, path) {
-        this.name = name;
-        this.path = path;
+    constructor(filePath) {
+        this.filePath = filePath;
+        this.name = path.basename(filePath);
 
         this.formatObject();
     }

@@ -3,6 +3,7 @@ cc3*
 package.json
 package-lock.json
 config.json
+test.js
 
 # Logs
 logs
