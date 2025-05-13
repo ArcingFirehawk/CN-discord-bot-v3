@@ -17,7 +17,7 @@ class AudioFile {
         this.filePath = filePath;
         this.name = path.basename(filePath);
 
-        this.formatObject();
+        // this.formatObject();
     }
 
 
