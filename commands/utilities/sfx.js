@@ -4,6 +4,8 @@
  * @author: Anthony Choi.
  * 
  * Packages: @discordjs/voice, libsodium-wrappers, ffmpeg-static.
+ * 
+ * To-Do: Create audio file objects with the directory and name.
  */
 
 
@@ -41,7 +43,7 @@ module.exports = {
 			console.error(`ERROR: ${error.message}`);
 		});
 
-		const resource = createAudioResource("cc3-juggernaut-voiceline1.mp3");    // Reintroduce when ready.
+		const resource = createAudioResource("cc3-juggernaut-voiceline3.mp3");    // Reintroduce when ready.
 		player.play(resource);
 
 		const connection = joinVoiceChannel({
