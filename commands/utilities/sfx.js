@@ -10,11 +10,16 @@
 
 
 
-// GLOBAL VARIABLES
+// IMPORTS
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const { generateDependencyReport, AudioPlayerStatus, joinVoiceChannel, createAudioPlayer, createAudioResource } = require("@discordjs/voice");
+const AudioFile = require("../../classes/AudioFile.js");
+
+
+// GLOBAL VARIABLES
 const config = require("../../config.json");
- 
+
+
 // COMMAND BUILDER
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -26,7 +31,8 @@ module.exports = {
 		const guildId = config.guildId;
 		// const guild = client.guild.cache.get(guildId);
 		// const guild = interaction.client.guild.fetch(guildId);
-		const voiceChannelId = config.voiceChannelId;
+		// const voiceChannelId = config.voiceChannelId;
+		const voiceChannelId = process.env.SFX_VOICE_CHANNEL_ID;
 		console.log("Channel ID: ", voiceChannelId);
 		console.log("Guild ID: ", guildId);
 		// const voiceChannel = client.channels.cache.get(voiceChannelId);
