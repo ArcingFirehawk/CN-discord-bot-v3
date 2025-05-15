@@ -17,11 +17,6 @@ const fs = require('fs');
 const AudioFile = require("../../classes/AudioFile.js");
 
 
-// GLOBAL VARIABLES
-const config = require("../../config.json");    // !!! Use .env instead?
-
-
-
 // FUNCTIONS
 
 // Function to get the filepath of all locally stored audio files.
@@ -65,13 +60,11 @@ module.exports = {
 
 	async execute(interaction) {
 		// LOCAL VARIABLES
-		const guildId = config.guildId;
+		const guildId = process.env.GUILD_ID;
 		// const guild = client.guild.cache.get(guildId);
 		// const guild = interaction.client.guild.fetch(guildId);
 		// const voiceChannelId = config.voiceChannelId;
 		const voiceChannelId = process.env.SFX_VOICE_CHANNEL_ID;
-		console.log("Channel ID: ", voiceChannelId);
-		console.log("Guild ID: ", guildId);
 		// const voiceChannel = client.channels.cache.get(voiceChannelId);
 		// const voiceChannel = guild.channels.fetch(voiceChannelId);
 		// const voiceChannel = interaction.guild.channels.cache.get(voiceChannelId);

@@ -4,6 +4,9 @@
  * @author: Anthony Choi. Assistance provided by Yiming He.
  * 
  * NOTE: Requires "PRESENCE INTENT" in the Discord Developer Portal to be enabled for full functionality.
+ * 
+ * 
+ * TO-DO: Add error handling for an invalid role.
  */
 
 
