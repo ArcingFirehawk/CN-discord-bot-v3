@@ -5,7 +5,7 @@
  * 
  * Packages: @discordjs/voice, libsodium-wrappers, ffmpeg-static.
  * 
- * To-Do: Create audio file objects with the directory and name.
+ * ISSUES: "voiceAdapterCreator" not working.
  */
 
 
