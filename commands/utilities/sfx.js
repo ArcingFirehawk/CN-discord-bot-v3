@@ -24,7 +24,7 @@ const config = require("../../config.json");    // !!! Use .env instead?
 
 // FUNCTIONS
 
-// Function to get all locally stored audio files.
+// Function to get the filepath of all locally stored audio files.
 function getAudioResources() {
 	const fileArray = fs.readdirSync("audio");
 	let filePathArray = [];
