@@ -5,7 +5,8 @@
  * 
  * Packages: @discordjs/voice, libsodium-wrappers, ffmpeg-static.
  * 
- * ISSUES: "voiceAdapterCreator" not working.
+ * ISSUES: Function chooseAudioFile sometimes returns invalid thing.
+ * TO-DO: Auto disconnect bot from voice channel after 5 or 10 sec.
  */
 
 
@@ -32,7 +33,7 @@ function getAudioResources() {
 	return filePathArray;
 }
 
-// Function that creates the AudioFile object(s).
+// Function that creates an array of AudioFile object(s).
 function createAudioObjects() {
     let filePathArray = getAudioResources();
 	let objArray = [];
@@ -40,7 +41,7 @@ function createAudioObjects() {
 	filePathArray.forEach(element => {
     objArray.push(new AudioFile(element));
 	});
-
+	
 	return objArray;
 }
 
@@ -48,8 +49,9 @@ function createAudioObjects() {
 function chooseAudioFile() {
 	let objArray = createAudioObjects();
 	let index = Math.floor(Math.random() * objArray.length);
+	console.log("\n\nIndex: ", index);
 
-    return objArray[index];
+    return objArray[index].filePath;
 }
 
 
@@ -60,83 +62,63 @@ module.exports = {
 		.setDescription("Plays a random sound effect or voiceline in a voice channel."),
 
 	async execute(interaction) {
-		
-
-		
 		// LOCAL VARIABLES
 		const guildId = process.env.GUILD_ID;
-		// const guild = client.guild.cache.get(guildId);
-		// const guild = interaction.client.guild.fetch(guildId);
-		// const voiceChannelId = config.voiceChannelId;
 		const voiceChannelId = process.env.SFX_VOICE_CHANNEL_ID;
-		// const voiceChannel = client.channels.cache.get(voiceChannelId);
-		// const voiceChannel = guild.channels.fetch(voiceChannelId);
-		// const voiceChannel = interaction.guild.channels.cache.get(voiceChannelId);
 		const voiceChannel = interaction.client.channels.fetch(voiceChannelId);
 		const player = createAudioPlayer();    // Creates the audio player.
+		let isReady;
 		
-		const objArray = createAudioObjects();
-		const resource = createAudioResource(objArray[2].filePath);
+		const resource = createAudioResource(chooseAudioFile());
 
-		// if statement that ends the command if the user is in a the correct voice channel.
 		if (interaction.member.voice.channel != voiceChannelId) {
 			return await interaction.reply({
-				content: 'You need to join a voice channel before using this command.',
+				content: "ERROR: Please join the correct voice channel before using this command.",
 				flags: MessageFlags.Ephemeral
 			});
+			
 		}
 		
+		// try-catch that makes the bot join a voice channel and play the audio file.
 		try {
-			// const connection = joinVoiceChannel({
-			// 	channelId: voiceChannelId,
-			// 	guildId: guildId,
-			// 	// adapterCreator: voiceChannel.guild.voiceAdapterCreator
-			// 	adapterCreator: voiceChannel.guild.voiceAdapterCreator
-			// });
-			
-			// const confirmation = await response.awaitMessageComponent({ filter: collectorFilter, time: 60_000 });
             const connection = joinVoiceChannel({
 				channelId: interaction.member.voice.channel.id,
 				guildId: interaction.member.voice.channel.guild.id,
 				adapterCreator: interaction.member.voice.channel.guild.voiceAdapterCreator
 			});
 
+			player.addListener("stateChange", (oldOne, newOne) => {
+				if (newOne.state == "Ready") {
+					interaction.reply({
+					content: "Connected to voice channel.",
+					flags: MessageFlags.Ephemeral
+					});
+
+					isReady = true;
+				}
+
+				if (newOne.status == "idle")
+					setTimeout(() => { if (newOne.state == "idle") connection.destroy()}, 5000);
+			});
+
+			// if (isReady == player.state) {
+			// 	connection.subscribe(player);
+			// 	player.play(resource);
+			// 	console.log("An audio file is being played.");
+			// }
+
+			connection.subscribe(player);
+			player.play(resource);
+			console.log("An audio file is being played.");
+			
 
 		} catch (e) {
 			console.log(`\n\nERROR: ${e}\n\n`);
-			await interaction.editReply({
-				content: "There was a problem with the command. Please try again later.",
-				components: []
-			});
 		}
-
-		player.on(AudioPlayerStatus.Playing, () => {
-			console.log("An audio file is being played.");
-		});
-		
-		player.on("error", error => {
-			console.error(`ERROR: ${error.message}`);
-		});
-
-		
-		
-		player.play(resource);
-
 
 		interaction.reply({
 			content: "Connected to voice channel.",
 			flags: MessageFlags.Ephemeral
 		});
-
-		const subscription = connection.subscribe(player);
-
-		if (subscription) {
-			setTimeout(() => subscription.unsubscribe(), 10_000);
-			
-			await interaction.editReply({
-				content: "TIMED OUT",
-				components: []
-			});
-		}
 	},
 };

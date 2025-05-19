@@ -13,7 +13,7 @@ const path = require("path");
 // CONSTRUCTOR
 class AudioFile {
     constructor(filePath) {
-        this.filePath = filePath;
+        this.filePath = __dirname + "/../" + filePath;
         this.name = path.basename(filePath);
     }
 
