@@ -65,7 +65,7 @@ module.exports = {
 		const voiceChannelId = process.env.SFX_VOICE_CHANNEL_ID;
 		const voiceChannel = interaction.client.channels.fetch(voiceChannelId);
 		const player = createAudioPlayer();    // Creates the audio player.
-		let isReady = false;
+		// let isReady = false;
 		
 		const resource = createAudioResource(chooseAudioFile());
 
@@ -91,7 +91,7 @@ module.exports = {
 					flags: MessageFlags.Ephemeral
 			});
 
-			await interaction.editReply("Connected to voice channel.");
+			// await interaction.editReply("Connected to voice channel.");
 
 			// while (!isReady) {
 			// 	connection.on(VoiceConnectionStatus.Ready, () => {
@@ -101,20 +101,20 @@ module.exports = {
 			// }
 
 			player.addListener("stateChange", (oldOne, newOne) => {
-				// if (newOne.state == "Ready") {
-				// 	interaction.edit({
-				// 		content: "Connected to voice channel.",
-				// 		flags: MessageFlags.Ephemeral
-				// 	});
+				if (newOne.state == "Ready") {
+					interaction.editReply({
+						content: "Connected to voice channel.",
+						flags: MessageFlags.Ephemeral
+					});
 
-				// 	// isReady = true;
-				// }
+					// isReady = true;
+				}
 
 				if (newOne.status == "idle")
 					setTimeout(() => { if (newOne.state == "idle") connection.destroy()}, 5000);
 			});
 			
-				// if statement that disconnects bot from voice channel if idle for a time.
+			// if statement that disconnects bot from voice channel if idle for a time.
 			// if (isReady == player.state) {
 			// 	connection.subscribe(player);
 			// 	player.play(resource);
@@ -123,7 +123,7 @@ module.exports = {
 
 			connection.subscribe(player);
 			player.play(resource);
-			console.log("\nNOTICE: An audio file is being played.");
+			console.log("\nNOTICE: Playing audio file.");
 
 			// player.on(AudioPlayerStatus.Idle, () => {
 			// 	interaction.editReply("Audio file has finished playing. Disconnecting bot from voice channel in 5 seconds.")	
