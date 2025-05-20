@@ -1,7 +1,7 @@
 /**
  * @name: voiceline.js
  * @description: Discord slash command that plays a random local voiceline.
- * @author: Anthony Choi.
+ * @author: Anthony Choi. Assistance provided by Yiming He.
  * 
  * Packages: @discordjs/voice, libsodium-wrappers, ffmpeg-static.
  * 
