@@ -71,7 +71,6 @@ module.exports = {
 
 		if (interaction.member.voice.channel != voiceChannelId) {
 			return await interaction.reply({
-				// content: `ERROR: Please join the "${voiceChannel}" voice channel before using this command.`,
 				content: "ERROR: Please join the correct voice channel before using this command.",
 				flags: MessageFlags.Ephemeral
 			});
@@ -86,32 +85,35 @@ module.exports = {
 				adapterCreator: interaction.member.voice.channel.guild.voiceAdapterCreator
 			});
 
-			await interaction.reply({
-					content: "Connecting...",
-					flags: MessageFlags.Ephemeral
-			});
+			// await interaction.reply({
+			// 		content: "Connecting...",
+			// 		flags: MessageFlags.Ephemeral
+			// });
 
 			// await interaction.editReply("Connected to voice channel.");
 
-			// while (!isReady) {
-			// 	connection.on(VoiceConnectionStatus.Ready, () => {
-			// 		interaction.editReply("Connected to voice channel.")
-			// 		isReady = true;
-			// 	});
-			// }
+			connection.on(VoiceConnectionStatus.Ready, () => {
+					// interaction.editReply("Connected to voice channel.")
+					
+					connection.subscribe(player);
+					player.play(resource);
 
-			player.addListener("stateChange", (oldOne, newOne) => {
-				if (newOne.state == "Ready") {
+					interaction.reply("Playing audio file.")
+					console.log("\nNOTICE: Playing audio file.");
+					
+				});
+
+				// Code to make the bot leave after some time.
+				player.addListener("stateChange", (oldOne, newOne) => {
+				if (newOne.status == "Ready") {
 					interaction.editReply({
 						content: "Connected to voice channel.",
 						flags: MessageFlags.Ephemeral
 					});
-
-					// isReady = true;
 				}
 
 				if (newOne.status == "idle")
-					setTimeout(() => { if (newOne.state == "idle") connection.destroy()}, 5000);
+					setTimeout(() => { if (newOne.status == "idle") connection.destroy()}, 10000);
 			});
 			
 			// if statement that disconnects bot from voice channel if idle for a time.
