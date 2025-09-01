@@ -1,6 +1,6 @@
 /**
  * @name: AudioFile.js
- * @description: Class to construct audio objects for based on files.
+ * @description: Class to construct audio objects for based on local sound files.
  * @author: Anthony Choi.
  */
 
